@@ -33,20 +33,56 @@ public class MathTest {
             fail("Method getCircleArea does not exist");
         }
     }
+//    @Test
+//    public void testGetCircleArea() throws Exception {
+//        Method getCircleArea = Math.class.getDeclaredMethod("getCircleArea", double.class);
+//        getCircleArea.setAccessible(true);
+//
+//        double expectedArea = 78.5;
+//        double actualArea = (double) getCircleArea.invoke(null, 5);
+//        assertEquals(expectedArea, actualArea, 0.0001);
+//    }
+//
+//    @Test
+//    public void testGetCircleAreaZeroRadius() throws Exception {
+//        Method getCircleArea = Math.class.getDeclaredMethod("getCircleArea", double.class);
+//        getCircleArea.setAccessible(true);
+//
+//        double expectedArea = 0.0;
+//        double actualArea = (double) getCircleArea.invoke(null, 0);
+//        assertEquals(expectedArea, actualArea, 0.0001);
+//    }
+@Test
+public void testGetCircleArea() throws Exception {
+    Class<?> mathClass = Class.forName("Math");
+    Field piField = mathClass.getDeclaredField("PI");
+    piField.setAccessible(true);
+    double pi = piField.getDouble(null);
 
-    @Test
-    public void testGetCircleArea() {
-        double expectedArea = 78.5;
-        double actualArea = Math.getCircleArea(5);
-        assertEquals(expectedArea, actualArea, 0.0001);
-    }
+    Method getCircleAreaMethod = mathClass.getDeclaredMethod("getCircleArea", int.class);
+    getCircleAreaMethod.setAccessible(true);
 
-    @Test
-    public void testGetCircleAreaZeroRadius() {
-        double expectedArea = 0.0;
-        double actualArea = Math.getCircleArea(0);
-        assertEquals(expectedArea, actualArea, 0.0001);
-    }
-
+    int radius = 5;
+    double expectedArea = pi * radius * radius;
+    double actualArea = (double) getCircleAreaMethod.invoke(null, radius);
+    assertEquals(expectedArea, actualArea, 0.0001);
 }
 
+    @Test
+    public void testGetCircleAreaZeroRadius() throws Exception {
+        Class<?> mathClass = Class.forName("Math");
+        Field piField = mathClass.getDeclaredField("PI");
+        piField.setAccessible(true);
+        double pi = piField.getDouble(null);
+
+        Method getCircleAreaMethod = mathClass.getDeclaredMethod("getCircleArea", int.class);
+        getCircleAreaMethod.setAccessible(true);
+
+        int radius = 0;
+        double expectedArea = pi * radius * radius;
+        double actualArea = (double) getCircleAreaMethod.invoke(null, radius);
+        assertEquals(expectedArea, actualArea, 0.0001);
+    }
+
+
+}
